@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -466,6 +466,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &196408540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+  m_PrefabInstance: {fileID: 1547358922}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38a01adef420a54ab0ef9bd93f4c00c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &197333936
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,6 +568,7 @@ GameObject:
   - component: {fileID: 231513922}
   - component: {fileID: 231513921}
   - component: {fileID: 231513920}
+  - component: {fileID: 231513923}
   m_Layer: 5
   m_Name: dragBtn
   m_TagString: Untagged
@@ -627,19 +639,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 231513921}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2015200329}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnDragBtnClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &231513921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,6 +678,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231513918}
   m_CullTransparentMesh: 1
+--- !u!114 &231513923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231513918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2015200329}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnDragBtnDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2015200329}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnDragBtnUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &334881622
 GameObject:
   m_ObjectHideFlags: 0
@@ -3055,7 +3100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e37c4add7c440019b05c216c288098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  total_game_length: 15
+  total_game_length: 60
   gameProgressBar: {fileID: 368328121}
   plantPlaceHolder: {fileID: 937138138}
   dragBtn: {fileID: 231513920}
@@ -3063,7 +3108,9 @@ MonoBehaviour:
   currentValueText: {fileID: 425783342}
   cashText: {fileID: 1752146575}
   finalCashText: {fileID: 960472797}
+  duangManager: {fileID: 196408540}
   initCash: 1000
+  btnLongPressTime: 0.8
   startGamePage: {fileID: 1631511574}
   endGamePage: {fileID: 759431114}
   plantMovement: {fileID: 528883720}

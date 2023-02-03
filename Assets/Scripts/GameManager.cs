@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public Text currentValueText;
     public Text cashText;
     public Text finalCashText;
+    public DuangManager duangManager;
     private List<PlantConfig> plants_config_list;
     private Dictionary<int, List<WordsConfig>> words_config_by_plant_id;
     private Vector3 plantInitPosition;
@@ -49,14 +50,21 @@ public class GameManager : MonoBehaviour
     }
 
     private float gameStartTime = 0;
-    private float plantMovementThreshold = 0;
-    
+    public float btnLongPressTime = 2.0f;
     
     private void Update()
     {
-        plantMovementThreshold -= 0.7f * Time.deltaTime;
-        plantMovementThreshold = plantMovementThreshold < 0 ? 0 : plantMovementThreshold;
-        
+        if (Math.Abs(dragBtnStartTime + 1) > 0.01f)
+        {
+            var longPressTime = Time.fixedTime - dragBtnStartTime;
+            var pressedRatio = longPressTime / btnLongPressTime;
+            duangManager.Pulling(pressedRatio);
+            if (pressedRatio >= 1.0f)
+            {
+                OnPlantDrag();
+                dragBtnStartTime = -1;
+            }
+        }
         var usedTime = Time.fixedTime - gameStartTime;
         var ratio = usedTime / total_game_length;
         if (ratio >= 1.0f)
@@ -120,32 +128,48 @@ public class GameManager : MonoBehaviour
     }
 
     public Transform plantMovement;
+
+    private float dragBtnStartTime = -1;
+
+    public void OnDragBtnDown()
+    {
+        dragBtnStartTime = Time.fixedTime;
+    }
+
+    public void OnDragBtnUp()
+    {
+        dragBtnStartTime = -1;
+    }
     
     public void OnDragBtnClicked()
     {
-        //currentCash -= Random.Range(40, 50);
-        currentCash -= 100;
-        UpdateCashText();
-        //plantMovementThreshold += 0.4f;
-        plantMovementThreshold += 1.0f;
-        if (plantMovementThreshold < 1.0f) return;
-        OnPlantDrag();
-        plantMovementThreshold = 0;
+        // //currentCash -= Random.Range(40, 50);
+        // currentCash -= 100;
+        // UpdateCashText();
+        // //plantMovementThreshold += 0.4f;
+        // OnPlantDrag();
     }
 
     private void OnPlantDrag()
     {
         if (_currentPlayingPlant == null)
             return;
+        currentCash -= 100;
+        UpdateCashText();
         sellBtn.interactable = true;
         SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), true);
         var valueList = _currentPlayingPlant.config.value_list;
         plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight/valueList.Count, 0);
         ++_currentPlayingPlant.currentDragTime;
         currentValueText.text = GetCurrentValueString();
-        if (_currentPlayingPlant.currentDragTime < valueList.Count) return;
+        if (_currentPlayingPlant.currentDragTime < valueList.Count)
+        {
+            duangManager.Relax();
+            return;
+        }
         dragBtn.interactable = false;
         SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
+        duangManager.Finish();
     }
 
     private void SetTextShow(Text text, bool show)
