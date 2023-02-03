@@ -138,6 +138,8 @@ public class GameManager : MonoBehaviour
 
     public void OnDragBtnUp()
     {
+        if(dragBtnStartTime > 0)
+            duangManager.Pulling(0);
         dragBtnStartTime = -1;
     }
     
