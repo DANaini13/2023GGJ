@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Button sellBtn;
     public Text currentValueText;
     public Text cashText;
+    public Text finalCashText;
     private List<PlantConfig> plants_config_list;
     private Dictionary<int, List<WordsConfig>> words_config_by_plant_id;
     private Vector3 plantInitPosition;
@@ -157,6 +158,7 @@ public class GameManager : MonoBehaviour
     private void UpdateCashText()
     {
         cashText.text = "钱包：￥" + currentCash;
+        finalCashText.text = "结余：￥" + currentCash;
     }
 
     public void OnSellBtnClicked()
