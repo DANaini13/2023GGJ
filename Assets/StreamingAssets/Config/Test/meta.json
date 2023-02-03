@@ -1,5 +1,6 @@
 {
     "file_list": [
-        "sub_resource_config.json"
+        "words.json",
+        "plants_config.json"
     ]
 }
