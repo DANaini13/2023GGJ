@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public float total_game_length = 60;
     public ProgressBar gameProgressBar;
+    public Transform plantPlaceHolder;
     private List<PlantConfig> plants_config_list;
     private Dictionary<int, List<WordsConfig>> words_config_by_plant_id;
     
@@ -54,4 +55,15 @@ public class GameManager : MonoBehaviour
         // start game timing!
         gameStartTime = Time.fixedTime;
     }
+
+    public void OnDragBtnClicked()
+    {
+        
+    }
+
+    public void OnSellBtnClicked()
+    {
+        
+    }
+    
 }
