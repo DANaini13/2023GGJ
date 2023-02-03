@@ -50,11 +50,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hand: {fileID: 0}
   cam: {fileID: 0}
+  camParent: {fileID: 0}
+  commentParent: {fileID: 6493714272597013800, guid: b83dc1ee7ef5b844580cef5364103f01, type: 3}
   maxShakerStrength: 0.7
-  camShakerThreshold: 50
-  mediumThreshold: 33
-  heavyThreshold: 66
-  handSpriteThreshold: 33
+  camShakerThreshold: 0.5
+  mediumThreshold: 0.33
+  heavyThreshold: 0.66
+  handSpriteThreshold: 0.33
   camZoomDis: 6
   handNormalSp: {fileID: 21300000, guid: b8d6811964d2f4d4fb220239b05f70b7, type: 3}
   handHoldSp: {fileID: 21300000, guid: 35f7dccb5723ed44fb39aeb5e1515920, type: 3}
@@ -63,6 +65,7 @@ MonoBehaviour:
   psHeavy: {fileID: 694665590798129624}
   psRelax: {fileID: 694665592078311851}
   psFinish: {fileID: 694665591314576045}
+  commentBar: {fileID: 8684210254144941944, guid: 55b2fc22ef6800d4aa3ece2ff1747a98, type: 3}
 --- !u!1001 &6721291220397399124
 PrefabInstance:
   m_ObjectHideFlags: 0
