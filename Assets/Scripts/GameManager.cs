@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,9 +19,15 @@ public class GameManager : MonoBehaviour
     public float total_game_length = 60;
     public ProgressBar gameProgressBar;
     public Transform plantPlaceHolder;
+    public Button dragBtn;
+    public Button sellBtn;
+    public Text currentValueText;
+    public Text cashText;
     private List<PlantConfig> plants_config_list;
     private Dictionary<int, List<WordsConfig>> words_config_by_plant_id;
     private Vector3 plantInitPosition;
+    public int initCash = 1000;
+    private int currentCash = 0;
     
     private void Awake()
     {
@@ -48,7 +55,6 @@ public class GameManager : MonoBehaviour
     {
         plantMovementThreshold -= 0.7f * Time.deltaTime;
         plantMovementThreshold = plantMovementThreshold < 0 ? 0 : plantMovementThreshold;
-        Debug.Log(plantMovementThreshold);
         
         var usedTime = Time.fixedTime - gameStartTime;
         var ratio = usedTime / total_game_length;
@@ -68,7 +74,9 @@ public class GameManager : MonoBehaviour
     {
         startGamePage.SetActive(false);
         endGamePage.SetActive(false);
-        // start game timing!
+        // set cash to init cash
+        currentCash = initCash;
+        // start game timing
         gameStartTime = Time.fixedTime;
         // instantiate new plant
         InitNewPlant();
@@ -78,6 +86,14 @@ public class GameManager : MonoBehaviour
     
     private void InitNewPlant()
     {
+        sellBtn.interactable = false;
+        SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), false);
+        dragBtn.interactable = true;
+        SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), true);
+        var text = dragBtn.transform.GetChild(0).GetComponent<Text>();
+        var color = text.color;
+        color.a = 1;
+        text.color = color;
         if (plantPlaceHolder.childCount > 0)
             Destroy(plantPlaceHolder.GetChild(0).gameObject);
         var plantIndex = Random.Range(0, plants_config_list.Count);
@@ -88,35 +104,66 @@ public class GameManager : MonoBehaviour
         var spriteRenderer = Instantiate(prefab, plantPlaceHolder).GetComponent<SpriteRenderer>();
         _currentPlayingPlant.totalHeight = spriteRenderer.size.y;
         plantMovement.position = plantInitPosition;
+        currentValueText.text = GetCurrentValueString();
+        UpdateCashText();
+    }
+
+    private int GetCurrentPlantValue()
+    {
+        return _currentPlayingPlant.currentDragTime <= 0 ? 0 : _currentPlayingPlant.config.value_list[_currentPlayingPlant.currentDragTime-1];
+    }
+
+    private string GetCurrentValueString()
+    {
+        return "当前价值：￥" + GetCurrentPlantValue();
     }
 
     public Transform plantMovement;
     
     public void OnDragBtnClicked()
     {
-        plantMovementThreshold += 0.4f;
-        if (!(plantMovementThreshold >= 1.0f)) return;
-        plantMovementThreshold = 0;
+        //currentCash -= Random.Range(40, 50);
+        currentCash -= 100;
+        UpdateCashText();
+        //plantMovementThreshold += 0.4f;
+        plantMovementThreshold += 1.0f;
+        if (plantMovementThreshold < 1.0f) return;
         OnPlantDrag();
+        plantMovementThreshold = 0;
     }
 
     private void OnPlantDrag()
     {
         if (_currentPlayingPlant == null)
             return;
+        sellBtn.interactable = true;
+        SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), true);
         var valueList = _currentPlayingPlant.config.value_list;
-        if (_currentPlayingPlant.currentDragTime < valueList.Count)
-        {
-            ++_currentPlayingPlant.currentDragTime;
-            plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight/valueList.Count, 0);
-        }
-        else
-            InitNewPlant();
+        plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight/valueList.Count, 0);
+        ++_currentPlayingPlant.currentDragTime;
+        currentValueText.text = GetCurrentValueString();
+        if (_currentPlayingPlant.currentDragTime < valueList.Count) return;
+        dragBtn.interactable = false;
+        SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
+    }
+
+    private void SetTextShow(Text text, bool show)
+    {
+        var color = text.color;
+        color.a = show ? 1.0f : 0.0f;
+        text.color = color;
+    }
+
+    private void UpdateCashText()
+    {
+        cashText.text = "钱包：￥" + currentCash;
     }
 
     public void OnSellBtnClicked()
     {
-        
+        currentCash += GetCurrentPlantValue();
+        UpdateCashText();
+        InitNewPlant();
     }
     
 }
