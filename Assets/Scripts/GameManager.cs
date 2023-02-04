@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public Button dragBtn;
     public Button sellBtn;
     public Text currentValueText;
+    public Text sellBtnText;
     public Text cashText;
     public Text finalCashText;
     public DuangManager duangManager;
@@ -117,6 +118,7 @@ public class GameManager : MonoBehaviour
         _currentPlayingPlant.totalHeight = spriteRenderer.size.y;
         plantMovement.position = plantInitPosition;
         currentValueText.text = GetCurrentValueString();
+        sellBtnText.text = "卖(+￥" + GetCurrentPlantValue() + ")";
         UpdateCashText();
     }
 
@@ -189,6 +191,7 @@ public class GameManager : MonoBehaviour
         plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight / valueList.Count, 0);
         ++_currentPlayingPlant.currentDragTime;
         currentValueText.text = GetCurrentValueString();
+        sellBtnText.text = "卖(+￥" + GetCurrentPlantValue() + ")";
         audioSource.clip = relaxSfx;
         audioSource.Play();
         if (_currentPlayingPlant.currentDragTime < valueList.Count)

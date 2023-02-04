@@ -241,7 +241,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &71270893
 MonoBehaviour:
@@ -269,14 +269,14 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 144
+    m_MaxSize: 110
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u62D4"
+  m_Text: "\u62D4(-\uFFE5100)"
 --- !u!222 &71270894
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -593,8 +593,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 464.3}
-  m_SizeDelta: {x: 803.3, y: 240}
+  m_AnchoredPosition: {x: 0, y: 420}
+  m_SizeDelta: {x: 803.3, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &231513920
 MonoBehaviour:
@@ -759,7 +759,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &334881624
 MonoBehaviour:
@@ -802,7 +802,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 144
+    m_MaxSize: 110
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1089,8 +1089,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 225}
-  m_SizeDelta: {x: -100, y: -750}
+  m_AnchoredPosition: {x: 0, y: 200}
+  m_SizeDelta: {x: -100, y: -800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &389020910
 MonoBehaviour:
@@ -1109,7 +1109,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 1000, y: 600}
@@ -1134,7 +1134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &425783341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1502,7 +1502,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 171.6}
-  m_SizeDelta: {x: 803.3, y: 240}
+  m_SizeDelta: {x: 803.3, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &557061830
 MonoBehaviour:
@@ -3300,11 +3300,11 @@ RectTransform:
   m_Father: {fileID: 939417896}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -32.579956, y: -52.599854}
-  m_SizeDelta: {x: 400, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: -100, y: 100}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1752146575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3332,7 +3332,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 80
-    m_Alignment: 2
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3487,6 +3487,7 @@ MonoBehaviour:
   dragBtn: {fileID: 231513920}
   sellBtn: {fileID: 557061830}
   currentValueText: {fileID: 425783342}
+  sellBtnText: {fileID: 334881625}
   cashText: {fileID: 1752146575}
   finalCashText: {fileID: 960472797}
   duangManager: {fileID: 196408540}
