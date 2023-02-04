@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private Vector3 plantInitPosition;
     public int initCash = 1000;
     private int currentCash = 0;
-    
+
     private void Awake()
     {
         plantInitPosition = plantMovement.transform.position;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         words_config_by_plant_id = new Dictionary<int, List<WordsConfig>>();
         foreach (var config in words_config_list)
         {
-            if(!words_config_by_plant_id.ContainsKey(config.id))
+            if (!words_config_by_plant_id.ContainsKey(config.id))
                 words_config_by_plant_id.Add(config.id, new List<WordsConfig>());
             words_config_by_plant_id[config.id].Add(config);
         }
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     private float gameStartTime = 0;
     public float btnLongPressTime = 2.0f;
-    
+
     private void Update()
     {
         if (Math.Abs(dragBtnStartTime + 1) > 0.01f)
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         var ratio = usedTime / total_game_length;
         if (ratio >= 1.0f)
         {
+            duangManager.Restore();
             endGamePage.SetActive(true);
             return;
         }
@@ -92,9 +93,11 @@ public class GameManager : MonoBehaviour
     }
 
     private PlantRunningData _currentPlayingPlant = null;
-    
+
     private void InitNewPlant()
     {
+        duangManager.Restore();
+
         sellBtn.interactable = false;
         SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), false);
         dragBtn.interactable = true;
@@ -119,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     private int GetCurrentPlantValue()
     {
-        return _currentPlayingPlant.currentDragTime <= 0 ? 0 : _currentPlayingPlant.config.value_list[_currentPlayingPlant.currentDragTime-1];
+        return _currentPlayingPlant.currentDragTime <= 0 ? 0 : _currentPlayingPlant.config.value_list[_currentPlayingPlant.currentDragTime - 1];
     }
 
     private string GetCurrentValueString()
@@ -131,18 +134,23 @@ public class GameManager : MonoBehaviour
 
     private float dragBtnStartTime = -1;
 
+    public AudioSource audioSource;
+    public AudioClip dragSfx;
     public void OnDragBtnDown()
     {
+        duangManager.Restore(); 
+        audioSource.clip = dragSfx;
+        audioSource.Play();
         dragBtnStartTime = Time.fixedTime;
     }
 
     public void OnDragBtnUp()
     {
-        if(dragBtnStartTime > 0)
+        if (dragBtnStartTime > 0)
             duangManager.Pulling(0);
         dragBtnStartTime = -1;
     }
-    
+
     public void OnDragBtnClicked()
     {
         // //currentCash -= Random.Range(40, 50);
@@ -152,6 +160,7 @@ public class GameManager : MonoBehaviour
         // OnPlantDrag();
     }
 
+    public AudioClip relaxSfx;
     private void OnPlantDrag()
     {
         if (_currentPlayingPlant == null)
@@ -161,11 +170,14 @@ public class GameManager : MonoBehaviour
         sellBtn.interactable = true;
         SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), true);
         var valueList = _currentPlayingPlant.config.value_list;
-        plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight/valueList.Count, 0);
+        plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight / valueList.Count, 0);
         ++_currentPlayingPlant.currentDragTime;
         currentValueText.text = GetCurrentValueString();
+        audioSource.clip = relaxSfx;
+        audioSource.Play();
         if (_currentPlayingPlant.currentDragTime < valueList.Count)
         {
+            duangManager.ShowSingleComment("单条评论");
             duangManager.Relax();
             return;
         }
@@ -187,11 +199,14 @@ public class GameManager : MonoBehaviour
         finalCashText.text = "结余：￥" + currentCash;
     }
 
+    public AudioClip sellSfx;
     public void OnSellBtnClicked()
     {
+        audioSource.clip = sellSfx;
+        audioSource.Play();
         currentCash += GetCurrentPlantValue();
         UpdateCashText();
         InitNewPlant();
     }
-    
+
 }

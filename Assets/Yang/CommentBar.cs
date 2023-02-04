@@ -13,4 +13,10 @@ public class CommentBar : MonoBehaviour
         this.transform.localScale = Vector3.zero;
         this.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic).SetDelay(delay);
     }
+    public void SingleBorn(string str)
+    {
+        text.text = str;
+        this.transform.localScale = Vector3.one * 3f;
+        this.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
+    }
 }

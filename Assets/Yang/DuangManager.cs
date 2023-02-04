@@ -16,6 +16,10 @@ public class DuangManager : MonoBehaviour
     public Transform sun;
     [Header("UI父对象")]
     public Transform commentParent;
+    public Transform commentSingleParent;
+    [Header("音效播放")]
+    public AudioSource audioSource;
+    public AudioClip commentSfx;
 
     [Header("动画参数，勿动")]
     public float maxShakerStrength = 0.7f;
@@ -38,6 +42,7 @@ public class DuangManager : MonoBehaviour
 
     [Header("UI引用")]
     public CommentBar commentBar;
+    public CommentBar commentSingleBar;
 
     private float camOriSize;
     private Vector3 camOriPos;
@@ -172,6 +177,10 @@ public class DuangManager : MonoBehaviour
         {
             for (int i = 0; i < comments.Length; i++)
             {
+                DOTween.To(v => { }, 0, 0, 0.15f * i).onComplete += () =>
+                {
+                    audioSource.PlayOneShot(commentSfx);
+                };
                 var bar = Instantiate(commentBar, commentParent);
                 bar.Born(i * 0.15f, comments[i]);
                 commentBarList.Add(bar);
@@ -189,5 +198,13 @@ public class DuangManager : MonoBehaviour
         foreach (var bar in commentBarList)
             Destroy(bar.gameObject);
         commentBarList.Clear();
+    }
+
+    public void ShowSingleComment(string str)
+    {
+        audioSource.PlayOneShot(commentSfx);
+        var bar = Instantiate(commentSingleBar, commentSingleParent);
+        bar.SingleBorn(str);
+        commentBarList.Add(bar);
     }
 }
