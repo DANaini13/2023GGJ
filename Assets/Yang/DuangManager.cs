@@ -7,6 +7,10 @@ public class DuangManager : MonoBehaviour
 {
     [Header("手")]
     public SpriteRenderer hand;
+    [Header("植物")]
+    public Transform plantParent;
+    [Header("手+植物")]
+    public Transform handParent;
     [Header("相机，这两个不能是同一个go")]
     public Transform cam;
     public Transform camParent;
@@ -28,6 +32,7 @@ public class DuangManager : MonoBehaviour
     public float heavyThreshold = 0.66f;
     public float handSpriteThreshold = 0.33f;
     public float camZoomDis = 8f;
+    public Color addColor;
 
     [Header("图片引用")]
     public Sprite handNormalSp;
@@ -50,6 +55,9 @@ public class DuangManager : MonoBehaviour
     private Shaker handShaker;
     private Vector3 sunOriPos;
     private Vector3 earthOriPos;
+    private Material handMat;
+    private SpriteRenderer plantRenderer;
+    private Material plantMat;
 
     void Awake()
     {
@@ -60,6 +68,17 @@ public class DuangManager : MonoBehaviour
 
         earthOriPos = earth.transform.position;
         sunOriPos = sun.transform.position;
+
+        handMat = hand.material;
+    }
+
+    bool BindPlantMat()
+    {
+        if (plantMat && plantRenderer) return true;
+        if (plantParent.childCount == 0) return false;
+        plantRenderer = plantParent.GetChild(0).GetComponent<SpriteRenderer>();
+        plantMat = plantRenderer.material;
+        return true;
     }
 
     void Update()
@@ -135,6 +154,11 @@ public class DuangManager : MonoBehaviour
             hand.sprite = handNormalSp;
         else
             hand.sprite = handHoldSp;
+
+        //图片变色
+        handMat.SetColor("_AddColor", Color.Lerp(Color.black, addColor, strength));
+        if (BindPlantMat())
+            plantMat.SetColor("_AddColor", Color.Lerp(Color.black, addColor, strength));
     }
 
     //完成一个阶段
@@ -163,15 +187,18 @@ public class DuangManager : MonoBehaviour
         //之后恢复正常速度
         DOTween.To(v => { }, 0, 0, 0.2f).onComplete += () =>
         {
+            earth.gameObject.SetActive(true);
             hand.sprite = handNormalSp;
             Time.timeScale = 1f;
         };
 
         //移动镜头
-        camParent.transform.DOMove(camParent.position + Vector3.left * 10f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        camParent.transform.DOMove(camParent.position + Vector3.left * 12f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
         //移开太阳和土地
         sun.DOMove(sunOriPos + Vector3.up * 50f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
         earth.DOMove(earthOriPos + Vector3.down * 50f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        //放大植物
+        handParent.DOScale(Vector3.one * 1.5f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
         //显示评论
         DOTween.To(v => { }, 0, 0, 1.5f).onComplete += () =>
         {
@@ -195,6 +222,7 @@ public class DuangManager : MonoBehaviour
         camParent.transform.position = camOriPos;
         sun.position = sunOriPos;
         earth.position = earthOriPos;
+        handParent.localScale = Vector3.one;
         foreach (var bar in commentBarList)
             Destroy(bar.gameObject);
         commentBarList.Clear();

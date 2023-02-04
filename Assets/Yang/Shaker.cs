@@ -49,7 +49,7 @@ public class Shaker : MonoBehaviour
         {
             var delta = Time.deltaTime * 800f;
             if (delta > 1f) delta = 1f;
-            this.transform.localPosition += (target - this.transform.localPosition) * 0.7f * delta;
+            this.transform.localPosition += (target - this.transform.localPosition) * 0.8f * delta;
         }
     }
 }

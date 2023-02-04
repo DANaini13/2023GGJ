@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &26999770
 Transform:
   m_ObjectHideFlags: 0
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+    m_PressedColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     m_ColorMultiplier: 1
@@ -854,7 +854,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3596ea111227f4741a7f6408e2bf5154, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1399,7 +1399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &551067337
 Transform:
   m_ObjectHideFlags: 0
@@ -1527,7 +1527,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.32156864, g: 0.32156864, b: 0.32156864, a: 1}
+    m_PressedColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     m_ColorMultiplier: 1
@@ -2831,13 +2831,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 426074265}
     - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: addColor.b
+      value: 0.6886792
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: addColor.g
+      value: 0.6886792
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: addColor.r
+      value: 0.6886792
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: blackCover
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
       propertyPath: commentSfx
       value: 
       objectReference: {fileID: 8300000, guid: 25ccf44f842b740478579e16dd112557, type: 3}
     - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: handParent
+      value: 
+      objectReference: {fileID: 528883720}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 2073339355}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: plantParent
+      value: 
+      objectReference: {fileID: 937138138}
     - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
       propertyPath: commentParent
       value: 
@@ -2846,6 +2870,10 @@ PrefabInstance:
       propertyPath: commentSingleBar
       value: 
       objectReference: {fileID: 8684210254144941944, guid: 8e8e85c21893aba4c83431ffbcdd3634, type: 3}
+    - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
+      propertyPath: maxShakerStrength
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6721291221868127100, guid: 2834184e7d528ff47ac26d7b9f17d1b8, type: 3}
       propertyPath: camShakerThreshold
       value: 0.15
@@ -2886,7 +2914,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568208046}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -16.02, z: 0}
+  m_LocalPosition: {x: 0, y: -21.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 26999770}
@@ -2938,8 +2966,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 2
+  m_Size: {x: 60, y: 30}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
