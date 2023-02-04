@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class DuangManager : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class DuangManager : MonoBehaviour
     [Header("音效播放")]
     public AudioSource audioSource;
     public AudioClip commentSfx;
+    public Transform valueParent;
+    public Text valueText;
+    public Transform rankParent;
+    public Text rankText;
 
     [Header("动画参数，勿动")]
     public float maxShakerStrength = 0.7f;
@@ -44,10 +49,12 @@ public class DuangManager : MonoBehaviour
     public ParticleSystem psHeavy;
     public ParticleSystem psRelax;
     public ParticleSystem psFinish;
+    public ParticleSystem psQuestion;
 
     [Header("UI引用")]
     public CommentBar commentBar;
     public CommentBar commentSingleBar;
+    public AudioClip rankSfx;
 
     private float camOriSize;
     private Vector3 camOriPos;
@@ -70,6 +77,8 @@ public class DuangManager : MonoBehaviour
         sunOriPos = sun.transform.position;
 
         handMat = hand.material;
+        rankParent.transform.localScale = Vector3.zero;
+        valueParent.transform.localScale = Vector3.zero;
     }
 
     bool BindPlantMat()
@@ -83,6 +92,7 @@ public class DuangManager : MonoBehaviour
 
     void Update()
     {
+        return;
         if (Input.GetKeyDown(KeyCode.Z))
             Pulling(0f);
         if (Input.GetKeyDown(KeyCode.X))
@@ -96,7 +106,7 @@ public class DuangManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
             Relax();
         if (Input.GetKeyDown(KeyCode.S))
-            Finish(new string[5]);
+            Finish(new string[5], 0);
         if (Input.GetKeyDown(KeyCode.Q))
             Restore();
     }
@@ -104,6 +114,7 @@ public class DuangManager : MonoBehaviour
     //正在拔（0-100）
     public void Pulling(float strength)
     {
+        psQuestion.Stop();
         //修正
         if (strength < 0) strength = 0f;
         else if (strength > 1f) strength = 1f;
@@ -165,6 +176,7 @@ public class DuangManager : MonoBehaviour
     public void Relax()
     {
         Pulling(0f);
+        psQuestion.Play();
         camShaker.Shaking(maxShakerStrength * 2f, 0.3f);
         psRelax.Play();
     }
@@ -173,9 +185,9 @@ public class DuangManager : MonoBehaviour
     private List<CommentBar> commentBarList = new List<CommentBar>();
     public void Finish()
     {
-        Finish(new string[5]);
+        Finish(new string[5], 0);
     }
-    public void Finish(string[] comments)
+    public float Finish(string[] comments, int totalValue)
     {
         //清空施加的力
         Pulling(0f);
@@ -211,12 +223,96 @@ public class DuangManager : MonoBehaviour
                 var bar = Instantiate(commentBar, commentParent);
                 bar.Born(i * 0.15f, comments[i]);
                 commentBarList.Add(bar);
+
+                rankParent.transform.localScale = Vector3.zero;
+                DOTween.To(v => { }, 0, 0, 1.5f).onComplete += () =>
+                {
+                    audioSource.PlayOneShot(rankSfx);
+                    rankParent.transform.localScale = Vector3.one * 3f;
+                    rankParent.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
+                    if (totalValue <= 0)
+                        rankText.text = "一毛不拔";
+                    else if (totalValue <= 200)
+                        rankText.text = "依托答辩";
+                    else if (totalValue <= 500)
+                        rankText.text = "不是很行";
+                    else if (totalValue <= 1000)
+                        rankText.text = "哎哟不错";
+                    else
+                        rankText.text = "牛了个逼";
+                };
             }
         };
+
+        return 2f;
+    }
+
+    public float Interrupt(string[] comments, int totalValue, int sellValue)
+    {
+        Restore();
+        //清空施加的力
+        Pulling(0f);
+
+        //移动镜头
+        camParent.transform.DOMove(camParent.position + Vector3.left * 12f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        //移开太阳和土地
+        sun.DOMove(sunOriPos + Vector3.up * 50f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        earth.DOMove(earthOriPos + Vector3.down * 50f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        //放大植物
+        handParent.DOScale(Vector3.one * 1.5f, 0.3f).SetDelay(1f).SetEase(Ease.InCubic);
+        //显示评论
+        DOTween.To(v => { }, 0, 0, 1.5f).onComplete += () =>
+        {
+            for (int i = 0; i < comments.Length; i++)
+            {
+                DOTween.To(v => { }, 0, 0, 0.15f * i).onComplete += () =>
+                {
+                    audioSource.PlayOneShot(commentSfx);
+                };
+                var bar = Instantiate(commentBar, commentParent);
+                bar.Born(i * 0.15f, comments[i]);
+                commentBarList.Add(bar);
+            }
+
+            rankParent.transform.localScale = Vector3.zero;
+            DOTween.To(v => { }, 0, 0, 1.5f).onComplete += () =>
+            {
+                audioSource.PlayOneShot(rankSfx);
+                rankParent.transform.localScale = Vector3.one * 3f;
+                rankParent.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
+                if (totalValue <= 0)
+                    rankText.text = "一毛不拔";
+                else if (totalValue <= 200)
+                    rankText.text = "依托答辩";
+                else if (totalValue <= 500)
+                    rankText.text = "不是很行";
+                else if (totalValue <= 1000)
+                    rankText.text = "哎哟不错";
+                else
+                    rankText.text = "牛了个逼";
+            };
+
+            valueParent.transform.localScale = Vector3.zero;
+            DOTween.To(v => { }, 0, 0, 2.5f).onComplete += () =>
+                {
+                    audioSource.PlayOneShot(rankSfx);
+                    valueParent.transform.localScale = Vector3.one * 3f;
+                    valueParent.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
+                    if (sellValue > totalValue)
+                        valueText.text = "实际总价值：" + totalValue + "块钱\n但你却以" + sellValue + "块的价格成交了！！！";
+                    else
+                        valueText.text = "实际总价值：" + totalValue + "块钱\n但你只卖出了" + sellValue + "块，笑死";
+                };
+        };
+
+        return 3.5f;
     }
 
     public void Restore()
     {
+        valueParent.transform.localScale = Vector3.zero;
+        rankParent.transform.localScale = Vector3.zero;
+        valueText.text = "";
         Pulling(0f);
         Camera.main.orthographicSize = camOriSize;
         camParent.transform.position = camOriPos;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 public class PlantRunningData
 {
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
                 words_config_by_plant_id.Add(config.id, new List<WordsConfig>());
             words_config_by_plant_id[config.id].Add(config);
         }
+        continueBtn.gameObject.SetActive(false);
     }
 
     private float gameStartTime = 0;
@@ -122,6 +124,11 @@ public class GameManager : MonoBehaviour
         UpdateCashText();
     }
 
+    private int GetCurrentPlantRealValue()
+    {
+        return _currentPlayingPlant.config.value_list[4];
+    }
+
     private int GetCurrentPlantValue()
     {
         return _currentPlayingPlant.currentDragTime <= 0 ? 0 : _currentPlayingPlant.config.value_list[_currentPlayingPlant.currentDragTime - 1];
@@ -137,10 +144,10 @@ public class GameManager : MonoBehaviour
         return words_config_by_plant_id[_currentPlayingPlant.config.id][Count].words;
     }
 
-    private string[] GetCurrentPlantAllWords()
+    private string[] GetCurrentPlantWordsArray(int count)
     {
-        string[] str = new string[5];
-        for (int i = 0; i < 5; i++)
+        string[] str = new string[count];
+        for (int i = 0; i < count; i++)
         {
             str[i] = GetCurrentPlantWords(i);
         }
@@ -202,7 +209,14 @@ public class GameManager : MonoBehaviour
         }
         dragBtn.interactable = false;
         SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
-        duangManager.Finish(GetCurrentPlantAllWords());
+        sellBtn.interactable = false;
+        SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), false);
+        var delay = duangManager.Finish(GetCurrentPlantWordsArray(5), GetCurrentPlantRealValue());
+        DOTween.To(v => { }, 0, 0, delay).onComplete += () =>
+        {
+            sellBtn.interactable = true;
+            SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), true);
+        };
     }
 
     private void SetTextShow(Text text, bool show)
@@ -218,6 +232,7 @@ public class GameManager : MonoBehaviour
         finalCashText.text = "结余：￥" + currentCash;
     }
 
+    public Button continueBtn;
     public AudioClip sellSfx;
     public void OnSellBtnClicked()
     {
@@ -226,6 +241,27 @@ public class GameManager : MonoBehaviour
         currentCash += GetCurrentPlantValue();
         duangManager.CoinPS(GetCurrentPlantValue());
         UpdateCashText();
+
+        if (_currentPlayingPlant.currentDragTime < 5)
+        {
+            var delay = duangManager.Interrupt(GetCurrentPlantWordsArray(5), GetCurrentPlantRealValue(), GetCurrentPlantValue());
+            plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight, 0);
+            dragBtn.interactable = false;
+            SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
+            sellBtn.interactable = false;
+            SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), false);
+            DOTween.To(v => { }, 0, 0, delay).onComplete += () =>
+            {
+                continueBtn.gameObject.SetActive(true);
+            };
+        }
+        else
+            InitNewPlant();
+    }
+
+    public void OnContinueBtnClick()
+    {
+        continueBtn.gameObject.SetActive(false);
         InitNewPlant();
     }
 
