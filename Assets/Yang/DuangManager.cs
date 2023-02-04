@@ -244,7 +244,7 @@ public class DuangManager : MonoBehaviour
             }
         };
 
-        return 2f;
+        return 3.5f;
     }
 
     public float Interrupt(string[] comments, int totalValue, int sellValue)
@@ -305,7 +305,7 @@ public class DuangManager : MonoBehaviour
                 };
         };
 
-        return 3.5f;
+        return 5f;
     }
 
     public void Restore()
