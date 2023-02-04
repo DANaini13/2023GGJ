@@ -235,4 +235,23 @@ public class DuangManager : MonoBehaviour
         bar.SingleBorn(str);
         commentBarList.Add(bar);
     }
+
+    public AudioClip clickSfx;
+    public void BtnClickSfx()
+    {
+        audioSource.PlayOneShot(clickSfx);
+    }
+
+    public ParticleSystem coinLight, coinMedium, coinHeavy;
+    public void CoinPS(int count)
+    {
+        if (count <= 0)
+            return;
+        else if (count < 200)
+            coinLight.Play();
+        else if (count < 500)
+            coinMedium.Play();
+        else
+            coinHeavy.Play();
+    }
 }

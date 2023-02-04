@@ -224,6 +224,7 @@ public class GameManager : MonoBehaviour
         audioSource.clip = sellSfx;
         audioSource.Play();
         currentCash += GetCurrentPlantValue();
+        duangManager.CoinPS(GetCurrentPlantValue());
         UpdateCashText();
         InitNewPlant();
     }
