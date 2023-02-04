@@ -130,6 +130,22 @@ public class GameManager : MonoBehaviour
         return "当前价值：￥" + GetCurrentPlantValue();
     }
 
+    private string GetCurrentPlantWords(int Count)
+    {
+        return words_config_by_plant_id[_currentPlayingPlant.config.id][Count].words;
+    }
+
+    private string[] GetCurrentPlantAllWords()
+    {
+        string[] str = new string[5];
+        for (int i = 0; i < 5; i++)
+        {
+            str[i] = GetCurrentPlantWords(i);
+        }
+
+        return str;
+    }
+
     public Transform plantMovement;
 
     private float dragBtnStartTime = -1;
@@ -138,7 +154,7 @@ public class GameManager : MonoBehaviour
     public AudioClip dragSfx;
     public void OnDragBtnDown()
     {
-        duangManager.Restore(); 
+        duangManager.Restore();
         audioSource.clip = dragSfx;
         audioSource.Play();
         dragBtnStartTime = Time.fixedTime;
@@ -177,13 +193,13 @@ public class GameManager : MonoBehaviour
         audioSource.Play();
         if (_currentPlayingPlant.currentDragTime < valueList.Count)
         {
-            duangManager.ShowSingleComment("单条评论");
+            duangManager.ShowSingleComment(GetCurrentPlantWords(_currentPlayingPlant.currentDragTime - 1));
             duangManager.Relax();
             return;
         }
         dragBtn.interactable = false;
         SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
-        duangManager.Finish();
+        duangManager.Finish(GetCurrentPlantAllWords());
     }
 
     private void SetTextShow(Text text, bool show)
