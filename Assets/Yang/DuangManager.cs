@@ -281,13 +281,13 @@ public class DuangManager : MonoBehaviour
                 rankParent.transform.localScale = Vector3.one * 3f;
                 rankParent.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
                 if (totalValue <= 0)
-                    rankText.text = "一毛不拔";
+                    rankText.text = "什么垃圾";
                 else if (totalValue <= 200)
                     rankText.text = "依托答辩";
                 else if (totalValue <= 500)
-                    rankText.text = "不是很行";
+                    rankText.text = "值点小钱";
                 else if (totalValue <= 1000)
-                    rankText.text = "哎哟不错";
+                    rankText.text = "哎哟卧槽";
                 else
                     rankText.text = "牛了个逼";
             };
@@ -299,9 +299,9 @@ public class DuangManager : MonoBehaviour
                     valueParent.transform.localScale = Vector3.one * 3f;
                     valueParent.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InCubic);
                     if (sellValue > totalValue)
-                        valueText.text = "实际总价值：" + totalValue + "块钱\n但你却以" + sellValue + "块的价格成交了！！！";
+                        valueText.text = "　　它的最终价值是" + totalValue + "块钱，但你却以" + sellValue + "块的价格成交了！！！";
                     else
-                        valueText.text = "实际总价值：" + totalValue + "块钱\n但你只卖出了" + sellValue + "块，笑死";
+                        valueText.text = "　　它的最终价值是" + totalValue + "块钱，但你只卖出了" + sellValue + "块，笑死";
                 };
         };
 
