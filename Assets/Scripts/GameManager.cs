@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
         _currentPlayingPlant.currentDragTime = 0;
         _currentPlayingPlant.config = plants_config_list[plantIndex];
         var prefab = PrefabManager.Instance.GetPrefab(_currentPlayingPlant.config.key);
+        Debug.Log(_currentPlayingPlant.config.key);
         var spriteRenderer = Instantiate(prefab, plantPlaceHolder).GetComponent<SpriteRenderer>();
         _currentPlayingPlant.totalHeight = spriteRenderer.size.y;
         plantMovement.position = plantInitPosition;
