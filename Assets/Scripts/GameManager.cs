@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private Vector3 plantInitPosition;
     public int initCash = 1000;
     private int currentCash = 0;
+    private int currentMaxValueCount;
 
     private void Awake()
     {
@@ -122,11 +123,13 @@ public class GameManager : MonoBehaviour
         currentValueText.text = GetCurrentValueString();
         sellBtnText.text = "卖(+￥" + GetCurrentPlantValue() + ")";
         UpdateCashText();
+
+        currentMaxValueCount = _currentPlayingPlant.config.value_list.Count;
     }
 
     private int GetCurrentPlantRealValue()
     {
-        return _currentPlayingPlant.config.value_list[4];
+        return _currentPlayingPlant.config.value_list[currentMaxValueCount - 1];
     }
 
     private int GetCurrentPlantValue()
@@ -211,7 +214,7 @@ public class GameManager : MonoBehaviour
         SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
         sellBtn.interactable = false;
         SetTextShow(sellBtn.transform.GetChild(0).GetComponent<Text>(), false);
-        var delay = duangManager.Finish(GetCurrentPlantWordsArray(5), GetCurrentPlantRealValue());
+        var delay = duangManager.Finish(GetCurrentPlantWordsArray(currentMaxValueCount), GetCurrentPlantRealValue());
         DOTween.To(v => { }, 0, 0, delay).onComplete += () =>
         {
             sellBtn.interactable = true;
@@ -244,7 +247,7 @@ public class GameManager : MonoBehaviour
 
         if (_currentPlayingPlant.currentDragTime < 5)
         {
-            var delay = duangManager.Interrupt(GetCurrentPlantWordsArray(5), GetCurrentPlantRealValue(), GetCurrentPlantValue());
+            var delay = duangManager.Interrupt(GetCurrentPlantWordsArray(currentMaxValueCount), GetCurrentPlantRealValue(), GetCurrentPlantValue());
             plantMovement.position += new Vector3(0, _currentPlayingPlant.totalHeight, 0);
             dragBtn.interactable = false;
             SetTextShow(dragBtn.transform.GetChild(0).GetComponent<Text>(), false);
